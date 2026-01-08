@@ -297,7 +297,7 @@ def card_end():
 
 
 # === Load Model and Mappings ===
-model = xgb.XGBRegressor()
+model = XGBRegressor()
 model.load_model("Model\model2.json")
 
 
