@@ -502,7 +502,60 @@ foreign_transfer = int((from_area != to_area))
 
 # === Prepare input dictionary for model ===
 
-data = {col: 0 for col in model.feature_names_in_}
+EXPECTED_COLS = [
+    'height',
+    'transferAge',
+    'isLoan',
+    'wasLoan',
+    'was_joker',
+    'foreign_transfer',
+    'percentage_played_before',
+    'scorer_before_grouped_category',
+    'clean_sheets_before_grouped',
+    'fromTeam_marketValue',
+    'toTeam_marketValue',
+    'marketvalue_closest',
+    'from_competition_competition_level',
+    'to_competition_competition_level',
+    'foot',
+    'mainPosition',
+    'positionGroup',
+    'from_competition_competition_area',
+    'to_competition_competition_area',
+    'value_per_age',
+    'value_age_product',
+    'team_market_value_relation',
+]
+
+data = {col: 0 for col in EXPECTED_COLS}
+data.update({
+    'height': height,
+    'transferAge': transfer_age,
+    'isLoan': int(isLoan),
+    'wasLoan': int(wasLoan),
+    'was_joker': int(was_joker),
+    'foreign_transfer': foreign_transfer,
+    'percentage_played_before': percentage_played_before,
+    'scorer_before_grouped_category': scorer_raw,
+    'clean_sheets_before_grouped': clean_sheets_before,
+    'fromTeam_marketValue': from_team_market_value,
+    'toTeam_marketValue': to_team_market_value,
+    'marketvalue_closest': market_value,
+    'from_competition_competition_level': from_level,
+    'to_competition_competition_level': to_level,
+    'foot': foot,
+    'mainPosition': main_position,
+    'positionGroup': position_group,
+    'from_competition_competition_area': from_area,
+    'to_competition_competition_area': to_area,
+    'value_per_age': market_value / transfer_age if transfer_age > 0 else 0,
+    'value_age_product': transfer_age * market_value,
+    'team_market_value_relation': to_team_market_value / from_team_market_value if from_team_market_value > 0 else 0
+})
+
+input_df = pd.DataFrame([data], columns=EXPECTED_COLS)  # erzwingt Reihenfolge/Spalten
+
+
 data.update({
     'height': height,
     'transferAge': transfer_age,
