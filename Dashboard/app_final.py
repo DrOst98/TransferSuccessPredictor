@@ -322,7 +322,7 @@ valid_clean_sheets = category_mappings.get("clean_sheets_before_grouped", ["0-2"
 valid_scorer_groups = category_mappings.get("scorer_before_grouped_category", ["defender/goalkeeper", "0-3", "3-6", "6-10", "10-15", "15-20", "other"])
 
 # Mapping positionGroup → mainPosition
-position_group_to_main = pd.read_csv("Model\xgboost_predictions_test.csv").groupby("positionGroup")["mainPosition"].unique().apply(list).to_dict()
+position_group_to_main = pd.read_csv(r"Model/xgboost_predictions_test.csv").groupby("positionGroup")["mainPosition"].unique().apply(list).to_dict()
 
 
 # League level per area
