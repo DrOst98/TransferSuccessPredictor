@@ -608,6 +608,16 @@ def hex_to_rgba(hex_color, alpha=0.5):
 # Prediction pipeline
 if predict_clicked:
     with st.spinner("Running prediction..."):
+        # Stelle sicher: gleiche Kategorien wie im Mapping
+        for col, cats in category_mappings.items():
+            if col in input_df.columns:
+                input_df[col] = pd.Categorical(input_df[col], categories=cats)
+
+        # In int codes umwandeln (XGBoost kann damit umgehen)
+        cat_cols = [c for c in category_mappings.keys() if c in input_df.columns]
+        for c in cat_cols:
+            input_df[c] = input_df[c].cat.codes.astype("int32")
+
         # Original model prediction
         dmat = xgb.DMatrix(input_df) # returns an array
         xgb_pred = model.predict(dmat)
