@@ -297,7 +297,7 @@ def card_end():
 
 
 # === Load Model and Mappings ===
-model = xgb.Booster()
+model = xgb.XGBRegressor()
 model.load_model(r"Model/model2.json")
 
 
@@ -501,61 +501,7 @@ with col2:
 foreign_transfer = int((from_area != to_area))
 
 # === Prepare input dictionary for model ===
-
-EXPECTED_COLS = [
-    'height',
-    'transferAge',
-    'isLoan',
-    'wasLoan',
-    'was_joker',
-    'foreign_transfer',
-    'percentage_played_before',
-    'scorer_before_grouped_category',
-    'clean_sheets_before_grouped',
-    'fromTeam_marketValue',
-    'toTeam_marketValue',
-    'marketvalue_closest',
-    'from_competition_competition_level',
-    'to_competition_competition_level',
-    'foot',
-    'mainPosition',
-    'positionGroup',
-    'from_competition_competition_area',
-    'to_competition_competition_area',
-    'value_per_age',
-    'value_age_product',
-    'team_market_value_relation',
-]
-
-data = {col: 0 for col in EXPECTED_COLS}
-data.update({
-    'height': height,
-    'transferAge': transfer_age,
-    'isLoan': int(isLoan),
-    'wasLoan': int(wasLoan),
-    'was_joker': int(was_joker),
-    'foreign_transfer': foreign_transfer,
-    'percentage_played_before': percentage_played_before,
-    'scorer_before_grouped_category': scorer_raw,
-    'clean_sheets_before_grouped': clean_sheets_before,
-    'fromTeam_marketValue': from_team_market_value,
-    'toTeam_marketValue': to_team_market_value,
-    'marketvalue_closest': market_value,
-    'from_competition_competition_level': from_level,
-    'to_competition_competition_level': to_level,
-    'foot': foot,
-    'mainPosition': main_position,
-    'positionGroup': position_group,
-    'from_competition_competition_area': from_area,
-    'to_competition_competition_area': to_area,
-    'value_per_age': market_value / transfer_age if transfer_age > 0 else 0,
-    'value_age_product': transfer_age * market_value,
-    'team_market_value_relation': to_team_market_value / from_team_market_value if from_team_market_value > 0 else 0
-})
-
-input_df = pd.DataFrame([data], columns=EXPECTED_COLS)  # erzwingt Reihenfolge/Spalten
-
-
+data = {col: 0 for col in model.feature_names_in_}
 data.update({
     'height': height,
     'transferAge': transfer_age,
@@ -608,20 +554,9 @@ def hex_to_rgba(hex_color, alpha=0.5):
 # Prediction pipeline
 if predict_clicked:
     with st.spinner("Running prediction..."):
-        # Stelle sicher: gleiche Kategorien wie im Mapping
-        for col, cats in category_mappings.items():
-            if col in input_df.columns:
-                input_df[col] = pd.Categorical(input_df[col], categories=cats)
-
-        # In int codes umwandeln (XGBoost kann damit umgehen)
-        cat_cols = [c for c in category_mappings.keys() if c in input_df.columns]
-        for c in cat_cols:
-            input_df[c] = input_df[c].cat.codes.astype("int32")
-
         # Original model prediction
-        dmat = xgb.DMatrix(input_df) # returns an array
-        xgb_pred = model.predict(dmat)
-                   
+        xgb_pred = model.predict(input_df)
+
         # GAM metamodel prediction based on original model's output
         final_pred = gam_model.predict(xgb_pred.reshape(-1, 1))
 
