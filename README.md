@@ -1,4 +1,4 @@
-# FC Köln Dashboard
+# Transfer Success Predictor
 
 ## Description
 
