@@ -609,8 +609,9 @@ def hex_to_rgba(hex_color, alpha=0.5):
 if predict_clicked:
     with st.spinner("Running prediction..."):
         # Original model prediction
-        xgb_pred = model.predict(input_df)  # returns an array
-        
+        dmat = xgb.DMatrix(input_df) # returns an array
+        xgb_pred = model.predict(dmat)
+                   
         # GAM metamodel prediction based on original model's output
         final_pred = gam_model.predict(xgb_pred.reshape(-1, 1))
 
