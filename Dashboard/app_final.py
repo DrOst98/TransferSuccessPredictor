@@ -125,9 +125,9 @@ st.markdown(
 # === BACKGROUND FUNCTION WITH OVERLAY ===
 
 # Define background and logo paths
-stadium_background = "Graphics\stadium.jpg"
-logo_fc = "Graphics\1-fc-koln-logo-png_seeklogo-266469.png"
-logo_uni = "Graphics\Uni_blau2.png"
+stadium_background = r"Graphics/stadium.jpg"
+logo_fc = r"Graphics/1-fc-koln-logo-png_seeklogo-266469.png"
+logo_uni = r"Graphics/Uni_blau2.png"
 
 
 # Set background image with dark overlay
@@ -185,7 +185,7 @@ set_bg_image_with_overlay(stadium_background)
 # Load player reference dataset
 @st.cache_data
 def load_player_reference_data():
-    return pd.read_csv("Data\df.csv")
+    return pd.read_csv(r"Data/df.csv")
 reference_df = load_player_reference_data()
 
 
@@ -297,17 +297,17 @@ def card_end():
 
 
 # === Load Model and Mappings ===
-model = XGBRegressor()
-model.load_model("Model\model2.json")
+model = xgb.XGBRegressor()
+model.load_model(r"Model/model2.json")
 
 
 # Load GAM model
-gam_model = joblib.load("Model\gam_model.pkl")
+gam_model = joblib.load(r"Model/gam_model.pkl")
 
 # Load category mappings
 @st.cache_data
 def load_mapping():
-    with open("Dashboard\category_mappings.json") as f:
+    with open(r"Dashboard/category_mappings.json") as f:
         return json.load(f)
 category_mappings = load_mapping()
 
