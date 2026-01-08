@@ -725,7 +725,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 with st.expander("📈 Show Feature Importances"):
-    st.image("Feature_Importances_SHAP.png", caption="Top Feature Importances", use_container_width=True)
+    st.image(r"Graphics/Feature_Importances_SHAP.png", caption="Top Feature Importances", use_container_width=True)
 
 
 # === Footer Section with credits ===
