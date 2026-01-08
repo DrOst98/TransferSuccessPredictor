@@ -41,7 +41,7 @@ This project is a comprehensive dashboard for FC Köln (1. FC Köln), a German f
 
 ## Dashboard Link
 
-[Access the live dashboard here](https://transfersuccesspredictor-bvx4pibkt2lnk7ttr4gxcn.streamlit.app/)
+[Access the live dashboard here](https://transfersuccesspredictor-23vx3ald8lf8737gfzahve.streamlit.app/)
 
 ## Project Structure
 
