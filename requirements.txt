@@ -4,5 +4,5 @@ matplotlib
 xgboost == 2.0.3
 numpy
 joblib
-scikit-learn
+scikit-learn == 1.5.2
 pygam
